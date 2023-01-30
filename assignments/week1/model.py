@@ -37,7 +37,6 @@ class LinearRegression:
         self.b = self.beta_hat[p]
         self.w = self.beta_hat[0:p]
 
-
     def predict(self, X: np.ndarray) -> (np.ndarray):
         """
         Predict the output for the given input.
