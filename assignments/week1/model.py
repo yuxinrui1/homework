@@ -33,7 +33,7 @@ class LinearRegression:
         p = X.shape[1]
         self.index = np.ones((n, 1), dtype=int)
         X = np.column_stack((X, self.index))
-        self.beta_hat = np.dot(np.linalg.inv(np.dot(X.T, X)), np.dot(X.T, y))
+        self.beta_hat = np.linalg.inv(X.T @ X) @ X.T @ y
         self.b = self.beta_hat[p]
         self.w = self.beta_hat[0:p]
 
