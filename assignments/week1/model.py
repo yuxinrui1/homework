@@ -1,20 +1,73 @@
 import numpy as np
-
-
+from numpy.linalg import inv
+import matplotlib.pylab as plt
 class LinearRegression:
+    """
+       A linear regression model that closed form to fit the model.
+       """
 
     w: np.ndarray
     b: float
 
     def __init__(self):
-        raise NotImplementedError()
+        self.w=np.ndarray
+        self.b = float
 
-    def fit(self, X, y):
-        raise NotImplementedError()
+    def fit(self, X:np.ndarray, y: np.ndarray)->(None):
+        """
+               fit the function by closed form
 
-    def predict(self, X):
-        raise NotImplementedError()
+                Arguments:
+                    X (np.ndarray): The input data.
+                    y (np.ndarray): The input data
 
+
+
+
+                Returns:
+                    None
+
+                """
+
+
+
+        n=y.shape[0]
+        p = X.shape[1]
+        self.index = np.ones((n,1),dtype=int)
+        X = np.column_stack((X,self.index))
+        #self.beta_hat = np.matmul(np.matmul(np.linalg.inv(np.matmul(np.array(X).transpose(), np.array(X))),X.transpose()), y)
+        self.beta_hat=np.linalg.inv(X.T @ X) @ X.T @ y
+        print(self.beta_hat[0:p])
+        # print(self.beta_hat.shape)
+        self.b = self.beta_hat[p]
+        self.w = self.beta_hat[0:p]
+
+
+
+
+
+
+
+
+    def predict(self, X: np.ndarray)->(np.ndarray):
+        """
+               Predict the output for the given input.
+
+               Arguments:
+                   X (np.ndarray): The input data.
+
+
+
+
+               Returns:
+                   np.ndarray: The predicted output.
+
+               """
+        #raise NotImplementedError()
+        #X = np.column_stack((self.index,X))
+        #y = np.matmul(X,self.beta_hat)
+        y = np.matmul(X,self.w)+self.b
+        return y
 
 class GradientDescentLinearRegression(LinearRegression):
     """
@@ -23,8 +76,62 @@ class GradientDescentLinearRegression(LinearRegression):
 
     def fit(
         self, X: np.ndarray, y: np.ndarray, lr: float = 0.01, epochs: int = 1000
-    ) -> None:
-        raise NotImplementedError()
+    ) -> (np.ndarray):
+        """
+        fit the function by gradient descent
+
+         Arguments:
+             X (np.ndarray): The input data.
+             y (np.ndarray): The input data
+             lr (float): learning rate
+             epochs (int): number of epochs
+
+
+
+         Returns:
+             np.ndarray: The fitted value output.
+
+         """
+
+
+
+
+        #raise NotImplementedError()
+
+        m,n = X.shape
+        self.weights = np.zeros((n,1))
+        self.bias= np.zeros((1))
+        y = y.reshape(m,1)
+        losses=[]
+        for i in range(epochs):
+            #beta = LinearRegression.fit(X,y)
+            y_hat = np.matmul(X, self.weights) + self.bias
+
+            # Calculting loss
+            loss = np.mean((y_hat - y) ** 2)
+
+            # Appending loss in list: losses
+            losses.append(loss)
+
+            # Calculating derivatives of parameters(weights, and
+            # bias)
+            dw = (2 / m) * np.matmul(X.T, (y_hat - y))
+            db = (2 / m) * np.sum((y_hat - y))
+            # Updating the parameters: parameter := parameter - lr*derivative
+            # of loss/cost w.r.t parameter)
+            self.weights -= lr * dw
+            self.bias -= lr * db
+
+            #y = np.matmul(X, self.weights) + self.bias
+        y_fitted = np.matmul(X, self.weights) + self.bias
+        plt.figure(figsize=(14, 5))
+        plt.plot(range(epochs), losses)
+        plt.show()
+        self.out=loss
+
+       # print(loss)
+        return y_fitted
+
 
     def predict(self, X: np.ndarray) -> np.ndarray:
         """
@@ -33,8 +140,16 @@ class GradientDescentLinearRegression(LinearRegression):
         Arguments:
             X (np.ndarray): The input data.
 
+
+
+
         Returns:
             np.ndarray: The predicted output.
 
         """
-        raise NotImplementedError()
+        #raise NotImplementedError()
+        #print(self.bias)
+        #print(self.weights)
+
+        product = np.matmul(X, self.weights) + self.bias
+        return product

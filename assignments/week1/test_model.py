@@ -95,14 +95,16 @@ def test_epochs_improve_fit():
         return np.mean((y - y_hat) ** 2)
 
     X = np.array([[1, 2], [3, 4]])
-    y = np.array([1, 2])
+    y = np.array([5, 11])
 
     lr = GradientDescentLinearRegression()
     lr.fit(X, y, epochs=10)
+    print(lr.weights)
     mse1 = mse(y, lr.predict(X))
 
     lr = GradientDescentLinearRegression()
     lr.fit(X, y, epochs=1000)
+    print(lr.weights)
     mse2 = mse(y, lr.predict(X))
 
     assert mse1 > mse2, "MSE should improve with more epochs."
