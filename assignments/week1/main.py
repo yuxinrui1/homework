@@ -7,7 +7,6 @@ import numpy as np
 from typing import Tuple
 
 
-
 def get_housing_data() -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """
     Get the California housing data from sklearn.
