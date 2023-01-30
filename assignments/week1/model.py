@@ -36,6 +36,7 @@ class LinearRegression:
         self.beta_hat = np.linalg.inv(X.T @ X) @ X.T @ y
         self.b = self.beta_hat[p]
         self.w = self.beta_hat[0:p]
+        print(self.w)
 
     def predict(self, X: np.ndarray) -> (np.ndarray):
         """
