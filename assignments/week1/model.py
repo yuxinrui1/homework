@@ -1,6 +1,4 @@
 import numpy as np
-from numpy.linalg import inv
-import matplotlib.pylab as plt
 
 
 class LinearRegression:
