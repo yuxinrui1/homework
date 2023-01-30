@@ -8,7 +8,6 @@ from typing import Tuple
 import pytest
 
 
-
 def get_housing_data() -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """
     Get the California housing data from sklearn.
@@ -61,4 +60,3 @@ def main():
 
     # Print the mean squared error:
     print("Mean squared error: {:.2f}".format(mse))
-

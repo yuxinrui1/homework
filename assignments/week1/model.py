@@ -1,70 +1,62 @@
 import numpy as np
 from numpy.linalg import inv
 import matplotlib.pylab as plt
+
+
 class LinearRegression:
     """
-       A linear regression model that closed form to fit the model.
-       """
+    A linear regression model that closed form to fit the model.
+    """
 
     w: np.ndarray
     b: float
 
     def __init__(self):
-        self.w=np.ndarray
+        self.w = np.ndarray
         self.b = float
 
-    def fit(self, X:np.ndarray, y: np.ndarray)->(None):
+    def fit(self, X: np.ndarray, y: np.ndarray) -> (None):
         """
-               fit the function by closed form
+        fit the function by closed form
 
-                Arguments:
-                    X (np.ndarray): The input data.
-                    y (np.ndarray): The input data
-
-
-
-
-                Returns:
-                    None
-
-                """
+         Arguments:
+             X (np.ndarray): The input data.
+             y (np.ndarray): The input data
 
 
 
-        n=y.shape[0]
+
+         Returns:
+             None
+
+        """
+
+        n = y.shape[0]
         p = X.shape[1]
-        self.index = np.ones((n,1),dtype=int)
-        X = np.column_stack((X,self.index))
-        self.beta_hat=np.linalg.inv(X.T @ X) @ X.T @ y
+        self.index = np.ones((n, 1), dtype=int)
+        X = np.column_stack((X, self.index))
+        self.beta_hat = np.linalg.inv(X.T @ X) @ X.T @ y
         self.b = self.beta_hat[p]
         self.w = self.beta_hat[0:p]
 
-
-
-
-
-
-
-
-    def predict(self, X: np.ndarray)->(np.ndarray):
+    def predict(self, X: np.ndarray) -> (np.ndarray):
         """
-               Predict the output for the given input.
+        Predict the output for the given input.
 
-               Arguments:
-                   X (np.ndarray): The input data.
-
-
+        Arguments:
+            X (np.ndarray): The input data.
 
 
-               Returns:
-                   np.ndarray: The predicted output.
 
-               """
-        #raise NotImplementedError()
-        #X = np.column_stack((self.index,X))
-        #y = np.matmul(X,self.beta_hat)
-        y = np.matmul(X,self.w)+self.b
+
+        Returns:
+            np.ndarray: The predicted output.
+
+        """
+
+        y = np.matmul(X, self.w) + self.b
         return y
+
 
 class GradientDescentLinearRegression(LinearRegression):
     """
@@ -88,20 +80,15 @@ class GradientDescentLinearRegression(LinearRegression):
          Returns:
              np.ndarray: The fitted value output.
 
-         """
+        """
 
-
-
-
-        #raise NotImplementedError()
-
-        m,n = X.shape
-        self.weights = np.zeros((n,1))
-        self.bias= np.zeros((1))
-        y = y.reshape(m,1)
-        losses=[]
+        m, n = X.shape
+        self.weights = np.zeros((n, 1))
+        self.bias = np.zeros((1))
+        y = y.reshape(m, 1)
+        losses = []
         for i in range(epochs):
-            #beta = LinearRegression.fit(X,y)
+
             y_hat = np.matmul(X, self.weights) + self.bias
 
             # Calculting loss
@@ -119,13 +106,12 @@ class GradientDescentLinearRegression(LinearRegression):
             self.weights -= lr * dw
             self.bias -= lr * db
 
-            #y = np.matmul(X, self.weights) + self.bias
+            # y = np.matmul(X, self.weights) + self.bias
         y_fitted = np.matmul(X, self.weights) + self.bias
-        self.out=loss
+        self.out = loss
 
-       # print(loss)
+        # print(loss)
         return y_fitted
-
 
     def predict(self, X: np.ndarray) -> np.ndarray:
         """
@@ -142,9 +128,6 @@ class GradientDescentLinearRegression(LinearRegression):
             np.ndarray: The predicted output.
 
         """
-        #raise NotImplementedError()
-        #print(self.bias)
-        #print(self.weights)
 
         product = np.matmul(X, self.weights) + self.bias
         return product
