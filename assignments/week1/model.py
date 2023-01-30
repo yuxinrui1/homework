@@ -35,10 +35,7 @@ class LinearRegression:
         p = X.shape[1]
         self.index = np.ones((n,1),dtype=int)
         X = np.column_stack((X,self.index))
-        #self.beta_hat = np.matmul(np.matmul(np.linalg.inv(np.matmul(np.array(X).transpose(), np.array(X))),X.transpose()), y)
         self.beta_hat=np.linalg.inv(X.T @ X) @ X.T @ y
-        print(self.beta_hat[0:p])
-        # print(self.beta_hat.shape)
         self.b = self.beta_hat[p]
         self.w = self.beta_hat[0:p]
 
@@ -124,9 +121,6 @@ class GradientDescentLinearRegression(LinearRegression):
 
             #y = np.matmul(X, self.weights) + self.bias
         y_fitted = np.matmul(X, self.weights) + self.bias
-        plt.figure(figsize=(14, 5))
-        plt.plot(range(epochs), losses)
-        plt.show()
         self.out=loss
 
        # print(loss)
