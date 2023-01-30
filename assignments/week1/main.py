@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 import numpy as np
 from typing import Tuple
-import pytest
+
 
 
 def get_housing_data() -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
