@@ -38,7 +38,10 @@ class MLP(nn.Module):
             self.layers += [layer]
             self.layers += [nn.Dropout(0.5), nn.BatchNorm1d(out_dim)]
             input_size = out_dim
-            out_dim = out_dim // 2
+            if i < (i / 2):
+                out_dim = out_dim // 2
+            else:
+                out_dim = out_dim * 2
 
         self.out = nn.Linear(input_size, num_classes)
 
