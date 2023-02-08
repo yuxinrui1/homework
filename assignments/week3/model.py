@@ -11,7 +11,7 @@ class MLP(nn.Module):
     def __init__(
         self,
         input_size: int,
-        hidden_size: int,
+        hidden_size: list,
         num_classes: int,
         hidden_count: int = 1,
         activation: Callable = torch.nn.ReLU,
@@ -32,14 +32,14 @@ class MLP(nn.Module):
         self.actv = activation()
         self.initializer = initializer
 
-        for i in range(hidden_size):
-            out_dim = hidden_size
+        for i in range(hidden_count):
+            out_dim = hidden_size[i]
             layer = nn.Linear(input_size, out_dim)
-            input_size = out_dim
             self.initializer(layer.weight)
             self.layers += [layer]
-            self.layers += [nn.BatchNorm1d(input_size)]
-        self.out = nn.Linear(hidden_size, num_classes)
+            self.layers += [nn.Dropout(0.5), nn.BatchNorm1d(out_dim)]
+            input_size = out_dim
+        self.out = nn.Linear(out_dim, num_classes)
 
     def forward(self, x: torch) -> torch:
         """
