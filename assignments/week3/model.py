@@ -29,14 +29,16 @@ class MLP(nn.Module):
         """
         super().__init__()
         self.layers = nn.ModuleList()
-        self.actv = activation
+        self.actv = activation()
         self.initializer = initializer
+
         for i in range(hidden_size):
             out_dim = hidden_size
             layer = nn.Linear(input_size, out_dim)
             input_size = out_dim
             self.initializer(layer.weight)
             self.layers += [layer]
+            self.layers +=[self.actv]
         self.out = nn.Linear(hidden_size, num_classes)
 
     def forward(self, x: torch) -> (torch):
