@@ -13,7 +13,7 @@ class LinearRegression:
         self.w = np.ndarray
         self.b = float
 
-    def fit(self, X: np.ndarray, y: np.ndarray) -> (None):
+    def fit(self, X: np.ndarray, y: np.ndarray) -> None:
         """
         fit the function by closed form
 
@@ -37,7 +37,7 @@ class LinearRegression:
         self.b = self.beta_hat[p]
         self.w = self.beta_hat[0:p]
 
-    def predict(self, X: np.ndarray) -> (np.ndarray):
+    def predict(self, X: np.ndarray) -> np.ndarray:
         """
         Predict the output for the given input.
 
@@ -63,7 +63,7 @@ class GradientDescentLinearRegression(LinearRegression):
 
     def fit(
         self, X: np.ndarray, y: np.ndarray, lr: float = 0.01, epochs: int = 1000
-    ) -> (np.ndarray):
+    ) -> np.ndarray:
         """
         fit the function by gradient descent
 
@@ -86,7 +86,6 @@ class GradientDescentLinearRegression(LinearRegression):
         y = y.reshape(m, 1)
         losses = []
         for i in range(epochs):
-
             y_hat = np.matmul(X, self.weights) + self.bias
 
             # Calculting loss

@@ -41,7 +41,7 @@ class MLP(nn.Module):
             self.layers += [nn.Dropout(0.5)]
         self.out = nn.Linear(hidden_size, num_classes)
 
-    def forward(self, x: torch) -> (torch):
+    def forward(self, x: torch) -> torch:
         """
         Forward pass of the network.
 
