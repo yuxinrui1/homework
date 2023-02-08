@@ -38,7 +38,7 @@ class MLP(nn.Module):
             input_size = out_dim
             self.initializer(layer.weight)
             self.layers += [layer]
-            self.layers += [nn.Dropout(0.5)]
+            self.layers += [nn.BatchNorm1d(input_size)]
         self.out = nn.Linear(hidden_size, num_classes)
 
     def forward(self, x: torch) -> torch:
