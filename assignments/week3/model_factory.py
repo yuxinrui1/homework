@@ -17,9 +17,9 @@ def create_model(input_dim: int, output_dim: int) -> MLP:
     """
     return MLP(
         input_dim,
-        64,
+        512,
         output_dim,
-        5,
+        4,
         torch.nn.Sigmoid,
         torch.nn.init.xavier_normal_,
     )
