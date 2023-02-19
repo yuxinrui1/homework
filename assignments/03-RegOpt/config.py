@@ -11,13 +11,12 @@ class CONFIG:
     initial_learning_rate = 0.005
     initial_weight_decay = 0.000
 
-
     lrs_kwargs = {
         # You can pass arguments to the learning rate scheduler
         # constructor here.
-        "T_0":800,
-        "eta_min":5e-6,
-        "T_mult":10,
+        "T_0": 800,
+        "eta_min": 5e-6,
+        "T_mult": 10,
     }
 
     optimizer_factory: Callable[

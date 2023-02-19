@@ -10,11 +10,7 @@ class CustomLRScheduler(_LRScheduler):
     custom lr
     """
 
-    def __init__(self, optimizer, T_0,
-                 T_mult,
-                 eta_min,
-                 last_epoch=-1,
-                 verbose=False):
+    def __init__(self, optimizer, T_0, T_mult, eta_min, last_epoch=-1, verbose=False):
         """
         Create a new scheduler.
 
@@ -42,5 +38,10 @@ class CustomLRScheduler(_LRScheduler):
         # ... Your Code Here ...
         # Here's our dumb baseline implementation:
 
-        return [self.eta_min + (base_lr - self.eta_min) * (1 + math.cos(math.pi * self.T_cur / self.T_i)) / 2
-                for base_lr in self.base_lrs]
+        return [
+            self.eta_min
+            + (base_lr - self.eta_min)
+            * (1 + math.cos(math.pi * self.T_cur / self.T_i))
+            / 2
+            for base_lr in self.base_lrs
+        ]
