@@ -13,9 +13,9 @@ class CustomLRScheduler(_LRScheduler):
         self,
         optimizer,
         last_epoch=-1,
-        initial_lr=0.01,
-        eta_min=0,
-        T_max=2,
+        start_factor=1.0 / 3,
+        end_factor=1.0,
+        total_iters=5,
     ):
         """
         Create a new scheduler.
@@ -25,11 +25,9 @@ class CustomLRScheduler(_LRScheduler):
 
         """
         # ... Your Code Here ...
-        self.optimizer = optimizer
-        self.eta_min = eta_min
-        self.T_max = T_max
-        self.lr = initial_lr
-        self.last_epoch = last_epoch
+        self.start_factor = start_factor
+        self.end_factor = end_factor
+        self.total_iters = total_iters
 
         super(CustomLRScheduler, self).__init__(optimizer, last_epoch)
 
@@ -44,11 +42,23 @@ class CustomLRScheduler(_LRScheduler):
         # ... Your Code Here ...
         # Here's our dumb baseline implementation:
 
-        pi = torch.acos(torch.zeros(1)) * 2
-        if self.last_epoch == -1:
-            lr = self.lr
-        else:
-            lr = self.eta_min + 0.5 * abs(self.lr - self.eta_min) * (
-                1 + torch.cos(pi * self.last_epoch / self.T_max)
+        if self.last_epoch == 0:
+            return [
+                group["lr"] * self.start_factor for group in self.optimizer.param_groups
+            ]
+
+        if self.last_epoch > self.total_iters:
+            return [group["lr"] for group in self.optimizer.param_groups]
+
+        return [
+            group["lr"]
+            * (
+                1.0
+                + (self.end_factor - self.start_factor)
+                / (
+                    self.total_iters * self.start_factor
+                    + (self.last_epoch - 1) * (self.end_factor - self.start_factor)
+                )
             )
-        return lr
+            for group in self.optimizer.param_groups
+        ]

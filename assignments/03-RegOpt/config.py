@@ -14,10 +14,6 @@ class CONFIG:
     lrs_kwargs = {
         # You can pass arguments to the learning rate scheduler
         # constructor here.
-        "initial_lr": initial_learning_rate,
-        "eta_min": 0,
-        "T_max": 2,
-        "last_epoch": -1,
     }
 
     optimizer_factory: Callable[
