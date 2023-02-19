@@ -13,9 +13,7 @@ class CustomLRScheduler(_LRScheduler):
         self,
         optimizer,
         last_epoch=-1,
-        start_factor=1.0 / 3,
-        end_factor=1.0,
-        total_iters=5,
+        gamma
     ):
         """
         Create a new scheduler.
@@ -25,9 +23,7 @@ class CustomLRScheduler(_LRScheduler):
 
         """
         # ... Your Code Here ...
-        self.start_factor = start_factor
-        self.end_factor = end_factor
-        self.total_iters = total_iters
+        self.gamma = gamma
 
         super(CustomLRScheduler, self).__init__(optimizer, last_epoch)
 
@@ -43,22 +39,6 @@ class CustomLRScheduler(_LRScheduler):
         # Here's our dumb baseline implementation:
 
         if self.last_epoch == 0:
-            return [
-                group["lr"] * self.start_factor for group in self.optimizer.param_groups
-            ]
-
-        if self.last_epoch > self.total_iters:
-            return [group["lr"] for group in self.optimizer.param_groups]
-
-        return [
-            group["lr"]
-            * (
-                1.0
-                + (self.end_factor - self.start_factor)
-                / (
-                    self.total_iters * self.start_factor
-                    + (self.last_epoch - 1) * (self.end_factor - self.start_factor)
-                )
-            )
-            for group in self.optimizer.param_groups
-        ]
+            return [group['lr'] for group in self.optimizer.param_groups]
+        return [group['lr'] * self.gamma
+                for group in self.optimizer.param_groups]
