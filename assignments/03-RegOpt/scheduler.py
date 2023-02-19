@@ -13,7 +13,7 @@ class CustomLRScheduler(_LRScheduler):
         self,
         optimizer,
         last_epoch=-1,
-        gamma
+        gamma=0.1,
     ):
         """
         Create a new scheduler.
@@ -39,6 +39,5 @@ class CustomLRScheduler(_LRScheduler):
         # Here's our dumb baseline implementation:
 
         if self.last_epoch == 0:
-            return [group['lr'] for group in self.optimizer.param_groups]
-        return [group['lr'] * self.gamma
-                for group in self.optimizer.param_groups]
+            return [group["lr"] for group in self.optimizer.param_groups]
+        return [group["lr"] * self.gamma for group in self.optimizer.param_groups]
