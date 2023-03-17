@@ -29,7 +29,7 @@ class Model(torch.nn.Module):
         self.conv2 = nn.Conv2d(16, 16, kernel_size=3, stride=1, padding=1)
         self.bn2 = nn.BatchNorm2d(16)
         self.relu2 = nn.ReLU(inplace=True)
-        self.fc = nn.Linear(16 * 16 * 16, num_classes)
+        self.fc = nn.Linear(16 * 8 * 8, num_classes)
 
     def forward(self, x) -> torch.Tensor:
         """
@@ -48,7 +48,7 @@ class Model(torch.nn.Module):
         x = self.conv2(x)
         x = self.bn2(x)
         x = self.relu2(x)
-        # x = self.pool(x)
-        x = x.view(-1, 16 * 16 * 16)
+        x = self.pool(x)
+        x = x.view(-1, 16 * 8 * 8)
         x = self.fc(x)
         return x
