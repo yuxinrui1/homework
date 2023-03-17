@@ -15,8 +15,8 @@ class CONFIG:
         # You can pass arguments to the learning rate scheduler
         # constructor here.
         "T_0": 800,
-        "eta_min": 3e-6,
-        "T_mult": 9,
+        "eta_min": 5e-6,
+        "T_mult": 10,
     }
 
     optimizer_factory: Callable[
