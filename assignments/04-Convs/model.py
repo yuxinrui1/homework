@@ -4,6 +4,13 @@ import torch.nn.functional as F
 
 
 class Model(torch.nn.Module):
+    """
+    A simple convolutional neural network for image classification on CIFAR-10 dataset.
+        num_classes (int): The number of classes in the classification problem.
+
+
+    """
+
     def __init__(self, num_channels: int, num_classes: int) -> None:
         super(Model, self).__init__()
 
