@@ -20,9 +20,9 @@ class Model(torch.nn.Module):
         # self.pool2 = nn.MaxPool2d(kernel_size=2, stride=2)
         # self.fc1 = nn.Linear(16 * 8 * 8, 64)
         # self.fc2 = nn.Linear(32*32*32, num_classes)
-        self.conv1 = nn.Conv2d(3, 32, kernel_size=3, stride=1, padding=1)
+        self.conv1 = nn.Conv2d(num_channels, 16, kernel_size=3, stride=1, padding=1)
         self.relu1 = nn.ReLU(inplace=True)
-        self.fc1 = nn.Linear(32 * 32 * 32, num_classes)
+        self.fc1 = nn.Linear(16 * 32 * 32, num_classes)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
