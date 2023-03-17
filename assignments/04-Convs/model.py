@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
+
+# import torch.nn.functional as F
 
 
 class Model(torch.nn.Module):
@@ -23,7 +24,7 @@ class Model(torch.nn.Module):
         self.relu2 = nn.ReLU(inplace=True)
         self.fc = nn.Linear(8 * 8 * 8, num_classes)
 
-    def forward(self, x):
+    def forward(self, x) -> torch.Tensor:
         """
         Defines the forward pass of the model.
 
