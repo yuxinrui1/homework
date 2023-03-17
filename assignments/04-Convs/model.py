@@ -13,6 +13,13 @@ class Model(torch.nn.Module):
     """
 
     def __init__(self, num_channels: int, num_classes: int) -> None:
+        """
+        Initializes the model.
+
+        Args:
+            num_channels (int): The number of channels in the input images (e.g. 3 for RGB images).
+            num_classes (int): The number of output classes.
+        """
         super(Model, self).__init__()
 
         self.conv1 = nn.Conv2d(num_channels, 16, kernel_size=3, stride=1, padding=1)
