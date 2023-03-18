@@ -44,11 +44,11 @@ class Model(nn.Module):
         x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu1(x)
-        # x = self.pool(x)
+        x = self.pool(x)
         # x = self.conv2(x)
         # x = self.bn2(x)
         # x = self.relu2(x)
         # x = self.pool(x)
-        x = x.view(-1, 16 * 32 * 32)
+        x = x.view(-1, 16 * 16 * 16)
         x = self.fc(x)
         return x
