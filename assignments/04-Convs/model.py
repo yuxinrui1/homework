@@ -22,7 +22,7 @@ class Model(nn.Module):
         """
         super(Model, self).__init__()
 
-        self.conv1 = nn.Conv2d(num_channels, 16, kernel_size=2, stride=1, padding=1)
+        self.conv1 = nn.Conv2d(num_channels, 16, kernel_size=4, stride=1, padding=1)
         self.bn1 = nn.BatchNorm2d(16)
         self.relu1 = nn.ReLU(inplace=True)
         self.pool = nn.MaxPool2d(kernel_size=2, stride=2)
