@@ -29,7 +29,7 @@ class Model(nn.Module):
         self.conv2 = nn.Conv2d(16, 16, kernel_size=3, stride=1, padding=1)
         self.bn2 = nn.BatchNorm2d(16)
         self.relu2 = nn.ReLU(inplace=True)
-        self.fc = nn.Linear(16 * 32 * 32, num_classes)
+        self.fc = nn.Linear(16 * 16 * 16, num_classes)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
