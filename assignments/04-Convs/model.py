@@ -4,7 +4,7 @@ import torch.nn as nn
 # import torch.nn.functional as F
 
 
-class Model(torch.nn.Module):
+class Model(nn.Module):
     """
     A simple convolutional neural network for image classification on CIFAR-10 dataset.
         num_classes (int): The number of classes in the classification problem.
@@ -31,7 +31,7 @@ class Model(torch.nn.Module):
         self.relu2 = nn.ReLU(inplace=True)
         self.fc = nn.Linear(16 * 16 * 16, num_classes)
 
-    def forward(self, x) -> torch.Tensor:
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
         Defines the forward pass of the model.
 
@@ -45,10 +45,10 @@ class Model(torch.nn.Module):
         x = self.bn1(x)
         x = self.relu1(x)
         x = self.pool(x)
-       # x = self.conv2(x)
-       # x = self.bn2(x)
-       # x = self.relu2(x)
-       # x = self.pool(x)
+        # x = self.conv2(x)
+        # x = self.bn2(x)
+        # x = self.relu2(x)
+        # x = self.pool(x)
         x = x.view(-1, 16 * 16 * 16)
         x = self.fc(x)
         return x
