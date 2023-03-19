@@ -26,10 +26,10 @@ class Model(nn.Module):
         self.bn1 = nn.BatchNorm2d(16)
         self.relu1 = nn.ReLU(inplace=True)
         self.pool = nn.MaxPool2d(kernel_size=2, stride=2)
-        self.conv2 = nn.Conv2d(16, 16, kernel_size=3, stride=1, padding=1)
-        self.bn2 = nn.BatchNorm2d(16)
+        self.conv2 = nn.Conv2d(16, 8, kernel_size=1, stride=1, padding=0)
+        self.bn2 = nn.BatchNorm2d(8)
         self.relu2 = nn.ReLU(inplace=True)
-        self.fc = nn.Linear(16 * 16 * 16, num_classes)
+        self.fc = nn.Linear(8 * 16 * 16, num_classes)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
@@ -42,13 +42,13 @@ class Model(nn.Module):
             torch.Tensor: The output tensor of shape (batch_size, num_classes).
         """
         x = self.conv1(x)
-        x = self.bn1(x)
-        x = self.relu1(x)
-        #x = self.pool(x)
+        # x = self.bn1(x)
+        # x = self.relu1(x)
+        # x = self.pool(x)
         x = self.conv2(x)
         x = self.bn2(x)
         x = self.relu2(x)
         x = self.pool(x)
-        x = x.view(-1, 16 * 16 * 16)
+        x = x.view(-1, 8 * 16 * 16)
         x = self.fc(x)
         return x
