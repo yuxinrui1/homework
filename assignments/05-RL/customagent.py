@@ -7,17 +7,19 @@ from typing import List
 
 
 # Define Q network
-class QNet(nn.Module):
+class QNetwork(nn.Module):
     "Docstring"
 
-    def __init__(self, input_dim, output_dim):
-        super(QNet, self).__init__()
-        self.fc1 = nn.Linear(input_dim, 64)
-        self.fc2 = nn.Linear(64, output_dim)
+    def __init__(self, input_size, output_size):
+        super(QNetwork, self).__init__()
+        self.fc1 = nn.Linear(input_size, 64)
+        self.fc2 = nn.Linear(64, 64)
+        self.fc3 = nn.Linear(64, output_size)
 
     def forward(self, x):
-        x = torch.relu(self.fc1(x))
-        x = self.fc2(x)
+        x = nn.functional.relu(self.fc1(x))
+        x = nn.functional.relu(self.fc2(x))
+        x = self.fc3(x)
         return x
 
 
@@ -29,9 +31,9 @@ class Agent:
         self,
         state_dim,
         action_dim,
-        lr=0.001,
-        gamma=0.99,
-        epsilon=1.0,
+        lr=0.005,
+        gamma=0.9,
+        epsilon=0.9,
         epsilon_decay=0.9995,
         min_epsilon=0.01,
     ):
