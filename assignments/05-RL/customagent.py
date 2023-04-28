@@ -59,9 +59,10 @@ class Agent:
     def learn(
         self,
         state: gym.spaces.Box,
+        action: int,
         reward: float,
-        terminated: bool,
-        truncated: bool,
+        next_state: List[float],
+        done: int,
     ) -> None:
         "Docstring"
         state = torch.FloatTensor(state).to(self.device)
