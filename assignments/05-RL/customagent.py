@@ -81,15 +81,4 @@ class Agent:
             done: Whether the episode terminated after the observed experience.
         """
         # Calculate the target Q-value for the observed experience
-        q_value = self.q_table[state][action]
-        max_next_q_value = np.max(self.q_table[next_state])
-        target_q_value = reward + self.discount_factor * max_next_q_value * (not done)
-
-        # Update the Q-value table using the Q-learning update rule
-        self.q_table[state][action] = q_value + self.learning_rate * (
-            target_q_value - q_value
-        )
-
-        # Decay epsilon
-        if self.epsilon > self.min_epsilon:
-            self.epsilon *= self.epsilon_decay
+        pass
