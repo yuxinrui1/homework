@@ -25,7 +25,7 @@ class Agent:
         self.epsilon_decay = epsilon_decay
         self.min_epsilon = min_epsilon
 
-    def act(self, state: gym.spaces.Box) -> gym.spaces.Discrete:
+    def act(self, s: gym.spaces.Box) -> gym.spaces.Discrete:
         """
         Choose an action to take given the current state.
         Uses an epsilon-greedy policy based on the Q-table.
@@ -36,15 +36,32 @@ class Agent:
         Returns:
             The index of the action to take.
         """
-        if random.random() < self.epsilon:
-            # Take a random action
-            return self.action_space.sample()
-        else:
-            # Choose the action with the highest Q-value
-            q_values = self.q_table[state]
-            max_q_value = np.max(q_values)
-            max_actions = np.where(q_values == max_q_value)[0]
-            return random.choice(max_actions)
+        angle_targ = s[0] * 0.5 + s[2] * 1.0  # angle should point towards center
+        if angle_targ > 0.4:
+            angle_targ = 0.4  # more than 0.4 radians (22 degrees) is bad
+        if angle_targ < -0.4:
+            angle_targ = -0.4
+        hover_targ = 0.55 * np.abs(
+            s[0]
+        )  # target y should be proportional to horizontal offset
+
+        angle_todo = (angle_targ - s[4]) * 0.5 - (s[5]) * 1.0
+        hover_todo = (hover_targ - s[1]) * 0.5 - (s[3]) * 0.5
+
+        if s[6] or s[7]:  # legs have contact
+            angle_todo = 0
+            hover_todo = (
+                -(s[3]) * 0.5
+            )  # override to reduce fall speed, that's all we need after contact
+
+            a = 0
+            if hover_todo > np.abs(angle_todo) and hover_todo > 0.05:
+                a = 2
+            elif angle_todo < -0.05:
+                a = 3
+            elif angle_todo > +0.05:
+                a = 1
+        return a
 
     def learn(
         self,
