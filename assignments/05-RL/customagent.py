@@ -12,9 +12,9 @@ class QNet(nn.Module):
 
     def __init__(self, input_size, output_size):
         super(QNet, self).__init__()
-        self.fc1 = nn.Linear(input_size, 64)
-        self.fc2 = nn.Linear(64, 64)
-        self.fc3 = nn.Linear(64, output_size)
+        self.fc1 = nn.Linear(input_size, 32)
+        self.fc2 = nn.Linear(32, 32)
+        self.fc3 = nn.Linear(32, output_size)
 
     def forward(self, x):
         x = nn.functional.relu(self.fc1(x))
@@ -31,11 +31,11 @@ class Agent:
         self,
         state_dim,
         action_dim,
-        lr=0.005,
+        lr=0.01,
         gamma=0.9,
         epsilon=0.9,
-        epsilon_decay=0.9995,
-        min_epsilon=0.01,
+        epsilon_decay=0.95,
+        min_epsilon=0.1,
     ):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.q_net = QNet(state_dim, action_dim).to(self.device)
