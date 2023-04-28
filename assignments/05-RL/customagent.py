@@ -11,7 +11,7 @@ class QNet(nn.Module):
     "Docstring"
 
     def __init__(self, input_size, output_size):
-        super(QNetwork, self).__init__()
+        super(QNet, self).__init__()
         self.fc1 = nn.Linear(input_size, 64)
         self.fc2 = nn.Linear(64, 64)
         self.fc3 = nn.Linear(64, output_size)
