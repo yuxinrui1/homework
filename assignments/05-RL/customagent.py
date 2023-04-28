@@ -57,11 +57,11 @@ class Agent:
                 return q_values.argmax().item()
 
     def learn(
-            self,
-            observation: gym.spaces.Box,
-            reward: float,
-            terminated: bool,
-            truncated: bool,
+        self,
+        observation: gym.spaces.Box,
+        reward: float,
+        terminated: bool,
+        truncated: bool,
     ) -> None:
         "Docstring"
         state = torch.FloatTensor(state).to(self.device)
