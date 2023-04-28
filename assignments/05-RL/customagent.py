@@ -46,7 +46,7 @@ class Agent:
         self.min_epsilon = min_epsilon
         self.action_dim = action_dim
 
-    def act(self, observation: gym.spaces.Box) -> gym.spaces.Discrete:
+    def act(self, state: gym.spaces.Box) -> gym.spaces.Discrete:
         "Docstring"
         if np.random.rand() < self.epsilon:
             return np.random.choice(self.action_dim)
@@ -58,7 +58,7 @@ class Agent:
 
     def learn(
         self,
-        observation: gym.spaces.Box,
+        state: gym.spaces.Box,
         reward: float,
         terminated: bool,
         truncated: bool,
