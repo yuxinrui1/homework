@@ -5,6 +5,7 @@ from keras.datasets import cifar10
 from keras.applications.resnet50 import ResNet50
 from keras.preprocessing.image import ImageDataGenerator
 import numpy as np
+
 # import torch.nn.functional as F
 
 
@@ -46,7 +47,7 @@ class Model(nn.Module):
             torch.Tensor: The output tensor of shape (batch_size, num_classes).
         """
         # Load the pre-trained ResNet-50 model
-        model = ResNet50(weights='imagenet', include_top=True)
+        model = ResNet50(weights="imagenet", include_top=True)
 
         # Make predictions on the test set
         preds = model.predict(x_test)
@@ -58,11 +59,11 @@ class Model(nn.Module):
         # x = self.bn1(x)
         # x = self.relu1(x)
         # x = self.pool(x)
-        #x = self.conv2(x)
-        #x = self.bn2(x)
-        #x = self.relu2(x)
-        #x = self.pool(x)
-        #x = x.view(-1, 16 * 16 * 16)
-        #x = self.fc(x)
+        # x = self.conv2(x)
+        # x = self.bn2(x)
+        # x = self.relu2(x)
+        # x = self.pool(x)
+        # x = x.view(-1, 16 * 16 * 16)
+        # x = self.fc(x)
         x = pred_labels
         return x
