@@ -10,9 +10,9 @@ class Agent:
         action_space: gym.spaces.Discrete,
         observation_space: gym.spaces.Box,
         alpha: float = 0.1,
-        gamma: float = 0.98,
-        epsilon: float = 1.0,
-        epsilon_min: float = 0.01,
+        gamma: float = 0.9,
+        epsilon: float = 0.8,
+        epsilon_min: float = 0.05,
         epsilon_decay: float = 0.995,
     ):
         "this is the agent function"
