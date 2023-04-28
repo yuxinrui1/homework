@@ -8,6 +8,7 @@ from typing import List, Tuple
 
 class QNet(nn.Module):
     "docstring"
+
     def __init__(self, state_dim: int, action_dim: int, hidden_dims: List[int]):
         super(QNet, self).__init__()
         dims = [state_dim] + hidden_dims + [action_dim]
@@ -24,6 +25,7 @@ class QNet(nn.Module):
 
 class Agent:
     "docstring"
+
     def __init__(
         self,
         state_dim: int,
