@@ -3,6 +3,8 @@ import numpy as np
 
 
 class Agent:
+    "this is the class function"
+
     def __init__(
         self,
         action_space: gym.spaces.Discrete,
@@ -13,6 +15,7 @@ class Agent:
         epsilon_min: float = 0.01,
         epsilon_decay: float = 0.995,
     ):
+        "this is the agent function"
         self.action_space = action_space
         self.observation_space = observation_space
         self.alpha = alpha
@@ -23,6 +26,7 @@ class Agent:
         self.q_table = np.zeros((observation_space.shape[0], action_space.n))
 
     def act(self, observation: gym.spaces.Box) -> gym.spaces.Discrete:
+        "this is the act function"
         if np.random.uniform() < self.epsilon:
             return self.action_space.sample()
         else:
@@ -35,6 +39,7 @@ class Agent:
         terminated: bool,
         truncated: bool,
     ) -> None:
+        "this is the learn function"
         action = self.act(observation)
         next_q = np.max(self.q_table[observation, :])
         self.q_table[observation, action] += self.alpha * (
