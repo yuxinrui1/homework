@@ -3,7 +3,7 @@
 
 """
 
-import gym
+import gymnasium as gym
 from customagent import Agent
 
 SHOW_ANIMATIONS = True
@@ -33,8 +33,8 @@ for _ in range(100000):
         print(
             f"{improvement_emoji} Finished with reward {int(total_reward)}.\tAverage of last {n}: {int(avg)}"
         )
-        #if avg > 0:
-           # print("🎉 Nice work! You're ready to submit the leaderboard! 🎉")
+        if avg > 0:
+            print("🎉 Nice work! You're ready to submit the leaderboard! 🎉")
         total_reward = 0
 
 env.close()

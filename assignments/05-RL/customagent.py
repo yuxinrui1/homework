@@ -1,4 +1,4 @@
-import gym
+import gymnasium as gym
 import numpy as np
 
 
@@ -42,19 +42,21 @@ class Agent:
                 -(s[3]) * 0.5
             )  # override to reduce fall speed, that's all we need after contact
 
-            a = 0
-            if hover_todo > np.abs(angle_todo) and hover_todo > 0.05:
-                a = 2
-            elif angle_todo < -0.05:
-                a = 3
-            elif angle_todo > +0.05:
-                a = 1
+        a = 0
+        if hover_todo > np.abs(angle_todo) and hover_todo > 0.1:
+            a = 2
+        elif angle_todo < -0.1:
+            a = 3
+        elif angle_todo > +0.1:
+            a = 1
         return a
 
     def learn(
         self,
-        state: gym.spaces.Box,
-        done: bool,
+        observation: gym.spaces.Box,
+        reward: float,
+        terminated: bool,
+        truncated: bool,
     ) -> None:
         """
         Update the Q-value table based on the observed experience.
