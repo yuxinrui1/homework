@@ -9,20 +9,9 @@ class Agent:
         self,
         action_space,
         observation_space,
-        learning_rate=0.1,
-        discount_factor=0.99,
-        epsilon=1.0,
-        epsilon_decay=0.999,
-        min_epsilon=0.01,
     ):
         self.action_space = action_space
         self.observation_space = observation_space
-        self.q_table = np.zeros((observation_space.shape[0], action_space.n))
-        self.learning_rate = learning_rate
-        self.discount_factor = discount_factor
-        self.epsilon = epsilon
-        self.epsilon_decay = epsilon_decay
-        self.min_epsilon = min_epsilon
 
     def act(self, s: gym.spaces.Box) -> gym.spaces.Discrete:
         """
