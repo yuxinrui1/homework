@@ -1,26 +1,6 @@
 import gymnasium as gym
-import torch
-import torch.nn as nn
-import torch.optim as optim
 import numpy as np
-from typing import List
-
-
-class QNet(nn.Module):
-    "docstring"
-
-    def __init__(self, state_dim: int, action_dim: int, hidden_dims: List[int]):
-        super(QNet, self).__init__()
-        dims = [state_dim] + hidden_dims + [action_dim]
-        self.layers = nn.ModuleList()
-        for i in range(len(dims) - 1):
-            self.layers.append(nn.Linear(dims[i], dims[i + 1]))
-
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        for layer in self.layers[:-1]:
-            x = nn.functional.relu(layer(x))
-        x = self.layers[-1](x)
-        return x
+import random
 
 
 class Agent:
@@ -28,33 +8,43 @@ class Agent:
 
     def __init__(
         self,
-        state_dim: int,
-        action_dim: int,
-        hidden_dims: List[int] = [32,32],
-        gamma: float = 0.99,
-        epsilon: float = 1.0,
-        epsilon_decay: float = 0.9,
-        min_epsilon: float = 0.01,
-        learning_rate: float = 1e-3,
-        device: str = "cpu",
+        action_space,
+        observation_space,
+        learning_rate=0.1,
+        discount_factor=0.99,
+        epsilon=1.0,
+        epsilon_decay=0.999,
+        min_epsilon=0.01,
     ):
-        self.q_net = QNet(state_dim, action_dim, hidden_dims).to(device)
-        self.q_target_net = QNet(state_dim, action_dim, hidden_dims).to(device)
-        self.q_target_net.load_state_dict(self.q_net.state_dict())
-        self.optimizer = optim.Adam(self.q_net.parameters(), lr=learning_rate)
-        self.gamma = gamma
+        self.action_space = action_space
+        self.observation_space = observation_space
+        self.q_table = np.zeros((observation_space.shape[0], action_space.n))
+        self.learning_rate = learning_rate
+        self.discount_factor = discount_factor
         self.epsilon = epsilon
         self.epsilon_decay = epsilon_decay
         self.min_epsilon = min_epsilon
-        self.device = device
 
-    def act(self, state: gym.spaces.Box) -> int:
-        "docstring"
-        state = torch.FloatTensor(state).unsqueeze(0).to(self.device)
-        with torch.no_grad():
-            q_values = self.q_net(state)
-        action = q_values.argmax().item()
-        return action
+    def act(self, state: gym.spaces.Box) -> gym.spaces.Discrete:
+        """
+        Choose an action to take given the current state.
+        Uses an epsilon-greedy policy based on the Q-table.
+
+        Args:
+            state: The current state of the environment.
+
+        Returns:
+            The index of the action to take.
+        """
+        if random.random() < self.epsilon:
+            # Take a random action
+            return self.action_space.sample()
+        else:
+            # Choose the action with the highest Q-value
+            q_values = self.q_table[state]
+            max_q_value = np.max(q_values)
+            max_actions = np.where(q_values == max_q_value)[0]
+            return random.choice(max_actions)
 
     def learn(
         self,
@@ -64,34 +54,26 @@ class Agent:
         next_state: np.ndarray,
         done: bool,
     ) -> None:
-        "docstring"
-        state = torch.FloatTensor(state).to(self.device)
-        action = torch.LongTensor([action]).to(self.device)
-        reward = torch.FloatTensor([reward]).to(self.device)
-        next_state = torch.FloatTensor(next_state).to(self.device)
-        done = torch.FloatTensor([done]).to(self.device)
+        """
+        Update the Q-value table based on the observed experience.
 
-        q_values = self.q_net(state).gather(1, action.unsqueeze(1)).squeeze(1)
-        next_q_values = self.q_target_net(next_state).max(1)[0]
-        expected_q_values = reward + (1 - done) * self.gamma * next_q_values
+        Args:
+            state: The state of the environment at the start of the observed experience.
+            action: The action taken during the observed experience.
+            reward: The reward received during the observed experience.
+            next_state: The state of the environment after the observed experience.
+            done: Whether the episode terminated after the observed experience.
+        """
+        # Calculate the target Q-value for the observed experience
+        q_value = self.q_table[state][action]
+        max_next_q_value = np.max(self.q_table[next_state])
+        target_q_value = reward + self.discount_factor * max_next_q_value * (not done)
 
-        loss = nn.MSELoss()(q_values, expected_q_values.detach())
-        self.optimizer.zero_grad()
-        loss.backward()
-        self.optimizer.step()
-
-        # Update target network
-        self.update_target_network()
+        # Update the Q-value table using the Q-learning update rule
+        self.q_table[state][action] = q_value + self.learning_rate * (
+            target_q_value - q_value
+        )
 
         # Decay epsilon
         if self.epsilon > self.min_epsilon:
             self.epsilon *= self.epsilon_decay
-
-    def update_target_network(self) -> None:
-        "docstring"
-        for param, target_param in zip(
-            self.q_net.parameters(), self.q_target_net.parameters()
-        ):
-            target_param.data.copy_(
-                self.gamma * target_param.data + (1 - self.gamma) * param.data
-            )
