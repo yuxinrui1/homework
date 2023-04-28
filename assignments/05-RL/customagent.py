@@ -7,7 +7,7 @@ from typing import List
 
 
 # Define Q network
-class QNetwork(nn.Module):
+class QNet(nn.Module):
     "Docstring"
 
     def __init__(self, input_size, output_size):
