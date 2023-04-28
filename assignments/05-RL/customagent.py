@@ -93,4 +93,4 @@ class Agent:
         for target_param, param in zip(
             self.q_target_net.parameters(), self.q_net.parameters()
         ):
-            target_param.data.copy_(param.data * 0.001 + target_param.data * 0.999)
+            target_param.data.copy_(param.data * 0.01 + target_param.data * 0.99)
